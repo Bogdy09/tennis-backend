@@ -1,25 +1,22 @@
-
-// src/data/db.js
 import sql from 'mssql';
 
 const config = {
-    user: 'bogdy12',
-    password: 'bogdy12',
-    server: 'BOGDY',
-    database: 'MPP',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    server: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT),
+    database: process.env.DB_NAME,
     options: {
         trustServerCertificate: true,
         encrypt: false
     }
 };
 
-// Create a single connection pool
 const pool = new sql.ConnectionPool(config);
 
-// Connect immediately and export the connected pool
 export const db = {
     pool: pool.connect().then(() => {
-        console.log('Connected to SQL Server');
+        console.log('Connected to SQL Server via ngrok');
         return pool;
     }).catch(err => {
         console.error('Database Connection Failed', err);
