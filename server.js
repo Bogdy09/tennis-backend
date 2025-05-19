@@ -32,7 +32,6 @@ const server = http.createServer(app);
 
 // Middleware
 app.use(express.json());
-app.use('/api/auth', authRoutes);
 app.use(cors({
      origin: [
 
@@ -43,6 +42,7 @@ app.use(cors({
 }));
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/players', playersRoute);
 app.use('/api/tournaments', tournamentRoutes);
 
