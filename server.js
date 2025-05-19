@@ -46,7 +46,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/players', playersRoute);
 app.use('/api/tournaments', tournamentRoutes);
 
-app.use("/api", monitorRoutes);
+app.use("/monitored-users", monitorRoutes);
 
 
 
