@@ -35,7 +35,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use(cors({
      origin: [
-        "http://localhost:3000",
+
         "https://tennis-tournaments-frontend.onrender.com"
     ],
     methods: ["GET", "POST", "PATCH", "DELETE"],
@@ -54,7 +54,7 @@ app.use("/api", monitorRoutes);
 const io = new Server(server, {
     cors: {
          origin: [
-        "http://localhost:3000",
+
         "https://tennis-tournaments-frontend.onrender.com"
     ],
         methods: ["GET", "POST"]
