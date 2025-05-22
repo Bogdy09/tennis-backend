@@ -13,8 +13,8 @@ router.post("/register", async (req, res) => {
 
     try {
         const pool = await db.pool;
-
-        // Check if username already exists
+        
+        // Check if username already existsj
         const checkResult = await pool.request()
             .input("username", sql.NVarChar(50), username)
             .query("SELECT id FROM Users WHERE username = @username");
