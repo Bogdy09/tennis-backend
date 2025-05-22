@@ -1,6 +1,7 @@
 import express from 'express';
 import { db } from '../data/db.js';
 import sql from 'mssql';
+import {sendVerificationEmail} from '../utils/email.js';
 
 const router = express.Router();
 
@@ -45,10 +46,18 @@ router.post('/login', async (req, res) => {
             .query('SELECT * FROM Users WHERE username = @username AND password = @password');
         if (result.recordset.length === 1) {
             const user = result.recordset[0];
+
+            // Generate a 6-digit code
+            const code = Math.floor(100000 + Math.random() * 900000);
+
+            // Send the code via email
+            await sendVerificationEmail(user.username, code);
+
+            // Respond with user info
             res.status(200).json({
-                message: 'Login successful',
+                message: 'Login successful. Verification code sent.',
                 userId: user.id,
-                username: user.username // ADD THIS LINE
+                username: user.username
             });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
