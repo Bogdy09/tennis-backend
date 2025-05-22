@@ -19,5 +19,7 @@ async function sendVerificationEmail(to, code) {
     await transporter.sendMail(mailOptions);
 }
 
-module.exports = { sendVerificationEmail };
 
+export default {
+    sendVerificationEmail
+}
