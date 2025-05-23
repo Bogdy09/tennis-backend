@@ -83,6 +83,7 @@ router.post('/verify-code', (req, res) => {
 
         res.status(200).json({
             message: 'Verification successful',
+            userId: user.id,
             username
         });
     } else {
