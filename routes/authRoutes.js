@@ -50,8 +50,8 @@ router.post('/login', async (req, res) => {
             // Generate a 6-digit code
             const code = Math.floor(100000 + Math.random() * 900000);
 
-            // Send the code via email
-            await sendVerificationEmail(user.username, code);
+            if(user.username!="admin")
+                await sendVerificationEmail(user.username, code);
 
             // Respond with user info
             res.status(200).json({
