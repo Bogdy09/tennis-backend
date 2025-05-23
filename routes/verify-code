@@ -1,0 +1,11 @@
+router.post('/verify-code', (req, res) => {
+    const { username, code } = req.body;
+
+    const validCode = verificationCodes.get(username);
+    if (validCode === code) {
+        verificationCodes.delete(username); // Optional: clear after use
+        return res.status(200).json({ message: '2FA success' }); // Return real userId
+    } else {
+        return res.status(401).json({ error: 'Invalid code' });
+    }
+});
