@@ -68,8 +68,6 @@ router.post('/login', async (req, res) => {
 }
 });
 
-// Temporary storage for verification codes
-const verificationCodes = {}; // Put this at the top of your file
 
 
 router.post('/verify-code', (req, res) => {
