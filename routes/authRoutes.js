@@ -4,6 +4,7 @@ import sql from 'mssql';
 import {sendVerificationEmail} from '../utils/email.js';
 
 const router = express.Router();
+const verificationCodes = new Map();
 
 router.post("/register", async (req, res) => {
     const { username, password } = req.body;
@@ -49,16 +50,13 @@ router.post('/login', async (req, res) => {
 
             // Generate a 6-digit code
             const code = Math.floor(100000 + Math.random() * 900000);
+             verificationCodes.set(user.username, code.toString());
 
             if(user.username!="admin")
                 await sendVerificationEmail(user.username, code);
 
             // Respond with user info
-            res.status(200).json({
-                message: 'Login successful. Verification code sent.',
-                userId: user.id,
-                username: user.username
-            });
+            res.status(200).json({ message: 'Verification code sent', username: user.username });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
         }
