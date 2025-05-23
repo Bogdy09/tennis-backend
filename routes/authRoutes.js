@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
                 await sendVerificationEmail(user.username, code);
 
             // Respond with user info
-            res.status(200).json({ message: 'Verification code sent', username: user.username });
+            res.status(200).json({ message: 'Verification code sent', userId: user.id, username: user.username });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
         }
