@@ -76,7 +76,7 @@ router.post('/verify-code', (req, res) => {
     if (!username || !code) {
         return res.status(400).json({ error: 'Username and code required' });
     }
-
+     const user = result.recordset[0];
     if (verificationCodes[username] && verificationCodes[username].toString() === code.toString()) {
         // Success!
         delete verificationCodes[username]; // Clean up
