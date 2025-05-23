@@ -4,7 +4,7 @@ import sql from 'mssql';
 import {sendVerificationEmail} from '../utils/email.js';
 
 const router = express.Router();
-const verificationCodes = new Map();
+const verificationCodes = {};
 
 router.post("/register", async (req, res) => {
     const { username, password } = req.body;
@@ -50,7 +50,8 @@ router.post('/login', async (req, res) => {
 
             // Generate a 6-digit code
             const code = Math.floor(100000 + Math.random() * 900000);
-             verificationCodes.set(user.username, code.toString());
+            verificationCodes[user.username] = code;
+           
 
             if(user.username!="admin")
                 await sendVerificationEmail(user.username, code);
