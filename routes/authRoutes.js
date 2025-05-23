@@ -70,26 +70,44 @@ router.post('/login', async (req, res) => {
 
 
 
-router.post('/verify-code', (req, res) => {
+router.post('/verify-code', async (req, res) => {
     const { username, code } = req.body;
 
     if (!username || !code) {
         return res.status(400).json({ error: 'Username and code required' });
     }
-     const user = result.recordset[0];
+
+    // Check if the code matches
     if (verificationCodes[username] && verificationCodes[username].toString() === code.toString()) {
-        // Success!
         delete verificationCodes[username]; // Clean up
 
-        res.status(200).json({
-            message: 'Verification successful',
-            userId: user.id,
-            username
-        });
+        try {
+            const pool = await db.pool;
+            const result = await pool.request()
+                .input("username", db.sql.NVarChar, username)
+                .query("SELECT id FROM Users WHERE username = @username");
+
+            if (result.recordset.length === 0) {
+                return res.status(404).json({ error: "User not found" });
+            }
+
+            const user = result.recordset[0];
+
+            return res.status(200).json({
+                message: 'Verification successful',
+                userId: user.id,
+                username
+            });
+
+        } catch (err) {
+            console.error("Error fetching user:", err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
     } else {
-        res.status(401).json({ error: 'Invalid verification code' });
+        return res.status(401).json({ error: 'Invalid verification code' });
     }
 });
+
 
 
 export default router;
