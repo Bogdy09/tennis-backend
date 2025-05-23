@@ -68,4 +68,29 @@ router.post('/login', async (req, res) => {
 }
 });
 
+// Temporary storage for verification codes
+const verificationCodes = {}; // Put this at the top of your file
+
+
+router.post('/verify-code', (req, res) => {
+    const { username, code } = req.body;
+
+    if (!username || !code) {
+        return res.status(400).json({ error: 'Username and code required' });
+    }
+
+    if (verificationCodes[username] && verificationCodes[username].toString() === code.toString()) {
+        // Success!
+        delete verificationCodes[username]; // Clean up
+
+        res.status(200).json({
+            message: 'Verification successful',
+            username
+        });
+    } else {
+        res.status(401).json({ error: 'Invalid verification code' });
+    }
+});
+
+
 export default router;
